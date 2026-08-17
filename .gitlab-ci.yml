@@ -1,0 +1,8 @@
+stages:
+  - test
+
+hello_world_job:
+  stage: test
+  image: alpine:latest
+  scriipt:
+    - echo "Hola Mundo"
