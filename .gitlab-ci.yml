@@ -1,8 +1,17 @@
 stages:
+  - build
   - run
 
-hello_python_job:
-  stage: run
-  image: python:3.11-slim
+image: docker:24.0.5
+services:
+  - docker:24.0.5-dind
+
+build-job:
+  stage: build
   script:
-    - python main.py
+    - docker build -t my-python-app .
+
+run-job:
+  stage: run
+  script:
+    - docker run --rm my-python-app
