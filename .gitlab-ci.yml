@@ -1,8 +1,8 @@
 stages:
-  - test
+  - run
 
-hello_world_job:
-  stage: test
-  image: alpine:latest
-  scriipt:
-    - echo "Hola Mundo"
+hello_python_job:
+  stage: run
+  image: python:3.11-slim
+  script:
+    - python main.py
