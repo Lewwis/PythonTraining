@@ -10,8 +10,14 @@ build-job:
   stage: build
   script:
     - docker build -t my-python-app .
+    - docker save my-python-app > my-python-app.tar
+  artifacts:
+    paths:
+      - my-python-app.tar
+    expire_in: 1 hour
 
 run-job:
   stage: run
   script:
+    - docker load < my-python-app.tar
     - docker run --rm my-python-app
