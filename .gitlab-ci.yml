@@ -1,14 +1,20 @@
 stages:
-  - build
   - test
+  - build
   - verify
 
 variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
+# 1. Test Stage: Run unit tests using python image
+test-job:
+  stage: test
+  image: python:3.11-slim
+  script:
+    - pip install -r requirements.txt
+    - pytest
 
-
-# 1. Build Stage: Build and push to GitLab Container Registry
+# 2. Build Stage: Build and push to GitLab Container Registry
 build-job:
   stage: build
   image: docker:24.0.5
@@ -18,14 +24,6 @@ build-job:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
-
-# 2. Test Stage: Run unit tests using python image
-test-job:
-  stage: test
-  image: python:3.11-slim
-  script:
-    - pip install -r requirements.txt
-    - pytest
 
 # 3. Verify Stage: Pull and test the container execution
 verify-job:
